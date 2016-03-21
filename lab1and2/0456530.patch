@@ -1,0 +1,50 @@
+diff -Naur lab1_ori/linux-0.11/include/linux/sched.h lab1/linux-0.11/include/linux/sched.h
+--- lab1_ori/linux-0.11/include/linux/sched.h	2016-03-07 17:20:32.478750492 +0800
++++ lab1/linux-0.11/include/linux/sched.h	2016-03-07 15:16:33.051651633 +0800
+@@ -1,7 +1,7 @@
+ #ifndef _SCHED_H
+ #define _SCHED_H
+ 
+-#define NR_TASKS 0
++#define NR_TASKS 64 //modified!
+ #define HZ 100
+ 
+ #define FIRST_TASK task[0]
+diff -Naur lab1_ori/linux-0.11/init/main.c lab1/linux-0.11/init/main.c
+--- lab1_ori/linux-0.11/init/main.c	2016-03-07 17:20:32.480751492 +0800
++++ lab1/linux-0.11/init/main.c	2016-03-07 15:16:33.052652175 +0800
+@@ -137,7 +137,7 @@
+ 	hd_init();
+ 	floppy_init();
+ 	sti();
+-	panic(""); 
++	//panic(""); 
+ 	move_to_user_mode();
+ 	if (!fork()) {		/* we count on this going ok */
+ 		init();
+@@ -201,6 +201,7 @@
+ 			(void) open("/dev/tty0",O_RDWR,0);
+ 			(void) dup(0);
+ 			(void) dup(0);
++			printf("Hello 0456530!!!\n");
+ 			_exit(execve("/bin/sh",argv,envp));
+ 		}
+ 		while (1)
+diff -Naur lab1_ori/linux-0.11/Makefile lab1/linux-0.11/Makefile
+--- lab1_ori/linux-0.11/Makefile	2016-03-07 17:20:32.472747491 +0800
++++ lab1/linux-0.11/Makefile	2016-03-07 15:16:33.053652716 +0800
+@@ -34,11 +34,11 @@
+ LIBS	=lib/lib.a
+ 
+ .c.s:
+-@$(CC) $(CFLAGS) -S -o $*.s $<
++	@$(CC) $(CFLAGS) -S -o $*.s $<
+ .s.o:
+-@$(AS)  -o $*.o $<
++	@$(AS)  -o $*.o $<
+ .c.o:
+-@$(CC) $(CFLAGS) -c -o $*.o $<
++	@$(CC) $(CFLAGS) -c -o $*.o $<
+ 
+ all:	Image	
+ 
